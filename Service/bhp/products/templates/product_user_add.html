@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+<!--{{ product.image.url }}-->
+{% block content%}
+<center>
+<div class="container-fluid">
+        <div class="row">
+        <!-- {% for usercompany in product_detail.all %} -->
+                {% if user.is_authenticated %}
+        <figure>
+                <a href="{% url 'product_detail' usercompany_id %}">
+                        <img src="{{ product.image.url }}" width="200" height="200" alt="{{ product.first_name }}"></a>
+                <figcaption class="container">
+                        <p><h3>Email:{{ usercompany.email}}</h1></p>
+                        <p><h4>Имя:{{ usercompany.first_name }}</h4></p>
+                        <p><h4>Фамилия:{{ usercompany.last_name }}</h4></p>
+                </figcaption>
+                        <!-- <p><a href="{% url 'edit_product' product.id %}" class="btn btn-warning">Edit</a></p> -->
+                        <form action="" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="product" value="{{ product.id }}">
+                        </form>
+                {% endif %}
+        </figure>
+        <!-- {% endfor %} -->
+        </div>
+</div>
+</center>
+{% endblock%}

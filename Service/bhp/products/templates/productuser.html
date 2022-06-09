@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %} New product {% endblock %}
+
+{% block content %}
+    <form class="container" action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary">Create</button>
+    </form>
+{% endblock %}
