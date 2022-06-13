@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<center>
+        <div class="container-fluid">
+                <div class="row">
+                {% for custom in object_list %}
+                        {% if user.is_authenticated %}
+                <figure>
+                                <img src="{{ custom.image.url }}" width="200" height="200" alt="{{ product.first_name }}"></a>
+                        <figcaption class="container">
+                                <p><h3>Компания:{{ custom.user_company }}</h3></p>
+                                <p><h4>Имя:{{ custom.first_name }}</h4></p>
+                                <p><h4>Фамилия:{{ custom.last_name }}</h4></p>
+                                <p><h4>Email:{{ custom.email }}</h4></p>
+                                <a href="{% url 'profile_edit' user.id %}"><p>Редактровать профиль</p></a>
+                        </figcaption>
+                        {% endif %}
+                </figure>
+                {% endfor %}
+                </div>
+        </div>
+</center>
+{% endblock %}

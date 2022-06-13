@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<center>
+        <div class="container-fluid">
+                <div class="row">
+                {% for auto in object_list %}
+                        {% if user.is_authenticated %}
+                <figure>
+                                <img src="{{ auto.image.url }}" width="200" height="200" alt="{{ product.first_name }}"></a>
+                        <figcaption class="container">
+                                <p><h4>Владелец:{{ auto.user_auto }}</h4></p>
+                                <p><h4>Компания:{{ auto.user_company }}</h4></p>
+                                <p><h4>Бренд:{{ auto.brand}}</h4></p>
+                                <p><h4>Модель:{{ auto.model}}</h4></p>
+                                <p><h4>Мощьность:{{ auto.power}} л/с</h4></p>
+                        </figcaption>
+                        {% endif %}
+                </figure>
+                {% endfor %}
+                </div>
+        </div>
+</center>
+{% endblock %}
