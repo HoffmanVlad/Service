@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
 ]
 
+DISABLE_COLLECTSTATIC=1
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
