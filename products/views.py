@@ -25,7 +25,8 @@ class LoginingView(LoginView):
     def form_valid(self, form):
         # self.request.session['last_request'] = str(timezone.now())
         return super().form_valid(form=form)
-
+    
+@classmethod
 class ProductListView(ListView ,PermissionRequiredMixin):
     model = Product
     template_name = 'products_list.html'
