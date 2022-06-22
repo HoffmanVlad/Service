@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<center>
+        <div class="container-fluid">
+                <div class="row">
+                {% for office in object_list %}
+                        {% if user.is_authenticated %}
+                <figure>
+                                <img src="{{ office.image.url }}" width="200" height="200" alt="{{ product.first_name }}"></a>
+                        <figcaption class="container">
+                                <p><h3>Компания:{{ office.name_company }}</h3></p>
+                                <p><h4>Страна:{{ office.country }}</h4></p>
+                                <p><h4>Город:{{ office.city }}</h4></p>
+                                <p><h4>Регион:{{ office.region }}</h4></p>
+                                <p><h4>Адрес:{{ office.address }}</h4></p>
+                        </figcaption>
+                        {% endif %}
+                </figure>
+                {% endfor %}
+                </div>
+        </div>
+</center>
+{% endblock %}

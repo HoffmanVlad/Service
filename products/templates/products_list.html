@@ -8,13 +8,34 @@
                 {% if user.is_authenticated %}
         <figure>
                 <!-- {% if request.user == product.user %} -->
-                <a href="{% url 'product_detail' product.id %}">
-                        <img src="{{ product.image.url }}" width="200" height="200" alt="{{ product.first_name }}"></a>
+                        <img src="{{ product.image.url }}" width="150" height="150" alt="{{ product.first_name }}"></a>
                 <figcaption class="container">
-                        <p><h3>Название компании:{{ product.company_name}}</h1></p>
-                        <p><h4>SEO:{{ user.email }}</h4></p>
+                        <p><h5>Название компании:{{ product.company_name}}</h5></p>
+                        <p><h6>SEO:{{ user.email }}</h6></p>
                 </figcaption>
-                        <p><a href="{% url 'edit_product' product.id %}" class="btn btn-outline-danger">Удалить компанию</a></p>
+                        <!-- <p><a href="{% url 'edit_product' product.id %}" class="btn btn-outline-danger">Удалить компанию</a></p> -->
+                        <p><a href="{% url 'product_detail' product.id %}" class="btn btn-outline-info">Подробние</a></p>
+                        <a class="btn btn-outline-info" data-toggle="modal" data-target="#exampleModal">Изменить данные</a>
+                        
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Изменение данных</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                Вы действительно ходите изменить данные?
+                              </div>
+                              <div class="modal-footer">
+                                <a class="btn btn-primary" href="{% url 'edit_product' product.id %}">Изменить данные</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                         <form action="" method="post">
                                 {% csrf_token %}
                                 <input type="hidden" name="product" value="{{ product.id }}">

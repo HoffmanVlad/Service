@@ -1,6 +1,6 @@
-from dataclasses import field
+from dataclasses import field, fields
 from django import forms
-from .models import Product, CustomUser, Custom, Auto
+from .models import Office, Product, CustomUser, Custom, Auto
 
 class CustomUserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -40,4 +40,9 @@ class UserCompanyForm(forms.ModelForm):
 class UserAutoForm(forms.ModelForm):
     class Meta:
         model = Auto
+        fields = '__all__'
+
+class OfficeForm(forms.ModelForm):
+    class Meta:
+        model = Office
         fields = '__all__'

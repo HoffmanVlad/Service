@@ -9,6 +9,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 
 USER_MODEL = settings.AUTH_USER_MODEL
 
+"""Иницилизация емайл для пользователя"""
 class UserManager(BaseUserManager):
     def _create_user(self, username, email, password=None, **extra_fields):
         if not username:
@@ -42,6 +43,7 @@ class UserManager(BaseUserManager):
 
         return self._create_user(username, email, password, **extra_fields)
 
+"""Создание пользователя и получение jwt token"""
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(db_index=True, max_length=255, unique=True)
     email = models.EmailField(validators=[validators.validate_email], unique=True, blank=False)
@@ -74,7 +76,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     }, settings.SECRET_KEY, algorithm='HS256')
         return token
     
-
+"""Модель компании"""
 class Product(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.SET_DEFAULT, default='user')
     first_name = models.CharField(max_length=100)
@@ -86,6 +88,7 @@ class Product(models.Model):
     def __str__(self):
         return self.company_name
 
+
 class TimeStampModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -94,6 +97,7 @@ class TimeStampModel(models.Model):
     class Meta:
         abstract = True
 
+"""Модель сотрудника компании"""
 class Custom(models.Model):
     user_company = models.ForeignKey(Product, on_delete=models.SET_DEFAULT, default='user')
     image = models.ImageField(upload_to='media/', blank=True, null=True)
@@ -104,10 +108,12 @@ class Custom(models.Model):
     def __str__(self):
         return '{}/{}'.format(self.first_name, self.last_name)
 
+"""ид пользователя и компании"""
 class Purchase(TimeStampModel):
     user_id = models.ForeignKey(USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)
     product_id = models.ForeignKey(Product, on_delete=models.SET_NULL, blank=True, null=True)
 
+"""Модель авто компании"""
 class Auto(models.Model):
     user_auto = models.ForeignKey(Custom, on_delete=models.SET_DEFAULT, default='user')
     user_company = models.ForeignKey(Product, on_delete=models.SET_DEFAULT, default='user')
@@ -118,3 +124,16 @@ class Auto(models.Model):
 
     def __str__(self):
         return '{},{}'.format(self.brand,  self.model)
+
+
+"""Модель офиса компании"""
+class Office(models.Model):
+    name_company = models.ForeignKey(Product, on_delete=models.SET_DEFAULT, default='user')
+    country = models.CharField(max_length=100)
+    region = models.CharField(max_length=100)
+    address = models.CharField(max_length=100)
+    city = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='media/', blank=True, null=True)
+
+    def __str__(self):
+        return self.name_company

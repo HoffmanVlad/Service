@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
+from django.urls import reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from .api.permissions import IsOwnerOrReadOnly
 from .api.resource import ProductSerializer
@@ -14,7 +15,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 from rest_framework import generics
 
-
+"""Логирование пользователей"""
 class LoginingView(LoginView):
     success_url = reverse_lazy('product_list_page')
     template_name = 'login.html'
@@ -25,37 +26,49 @@ class LoginingView(LoginView):
     def form_valid(self, form):
         # self.request.session['last_request'] = str(timezone.now())
         return super().form_valid(form=form)
-    
-@classmethod
+
+ #////////////////////////////////////////////
+
+"""Отрисовка главного шаблона"""   
 class ProductListView(ListView ,PermissionRequiredMixin):
     model = Product
     template_name = 'products_list.html'
     queryset = Product.objects.all()
+#/////////////////////////////////////
 
+"""Показуеть детали модели """
 class ProductDetailView(DetailView):
     template_name = 'product_detail.html'
     model = Product
-    
+#///////////////////////////////////////
 
+"""рофиль пользователя"""
 class ProfileUser(LoginRequiredMixin,ListView):
     template_name = 'profile.html'
     queryset = CustomUser.objects.all()
+#//////////////////////////////////
 
+"""Профили сотрудников компании"""
 class ProfileUserCompany(LoginRequiredMixin,ListView):
     template_name = 'users_list.html'
     model = Custom
+#/////////////////////////////
 
+"""Автомобили компании"""
 class AutoCompany(LoginRequiredMixin,ListView):
     template_name = 'auto.html'
     model = Auto
-    
+#///////////////////////////////
+
+"""Создание новой компании"""   
 class NewProductView(LoginRequiredMixin,CreateView):
     template_name = 'product_form.html'
     model = Product
     form_class = NewProductForm
     success_url = reverse_lazy('product_list_page')
+#///////////////////////////////
 
-
+"""Добавление сотрдников компании"""
 class NewUserView(LoginRequiredMixin,CreateView):
     template_name = 'productuser.html'
     model = Custom
@@ -64,20 +77,25 @@ class NewUserView(LoginRequiredMixin,CreateView):
 
     def get_absolute_url(self):
         return reverse("newuser", kwargs={"id": self.id})
+#////////////////////////////////
 
+"""Добавление автомобилей в компанию """
 class NewAutoView(LoginRequiredMixin,CreateView):
     template_name = 'auto_form.html'
     model = Auto
     form_class = UserAutoForm
     success_url = reverse_lazy('newautoview')   
+#///////////////////////////////////////////
 
-
+"""Изменение компании"""
 class EditProductView(LoginRequiredMixin,UpdateView):
     template_name = 'product_form.html'
     model = Product
     form_class = EditProductForm
     success_url = reverse_lazy('product_list_page')
+#/////////////////////////////////////////////
 
+"""Изменение профиля сотрудника компании"""
 class ProfileUserEdit(LoginRequiredMixin,UpdateView):
     template_name = 'product_form.html'
     model = Custom
@@ -86,8 +104,9 @@ class ProfileUserEdit(LoginRequiredMixin,UpdateView):
 
     def get_absolute_url(self):
         return reverse("newuser", kwargs={"id": self.id})
+#/////////////////////////////////////////
 
-
+"""Регистрация пользователя """
 class UserCreateView(CreateView):
     model = CustomUser
     form_class = CustomUserForm
@@ -99,12 +118,14 @@ class UserCreateView(CreateView):
         self.object.set_password(self.object.password)
         self.object.save()
         return super().form_valid(form)
+#/////////////////////////////////
 
-
+"""Выход из сайта"""
 class Logout(LogoutView):
     next_page = '/'
+#/////////////////////////////////
 
-
+"""Апи для сереализации данных """
 class ProductViewSet_Api(APIView):
     """
     API endpoint that allows users to be viewed or edited.
@@ -173,3 +194,4 @@ class SnippetDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = SnippetSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+#///////////////////////////////////////////
